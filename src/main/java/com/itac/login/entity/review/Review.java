@@ -44,9 +44,10 @@ public class Review implements Serializable {
     private List<String> images = new ArrayList<>();
 
     @Builder
-    public Review(Long reviewNum,Float grade) {
+    public Review(Long reviewNum,Float grade,Store store) {
         super();
         this.reviewNum = reviewNum;
         this.grade = grade;
+        this.store = store;
     }
 }

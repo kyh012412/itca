@@ -26,6 +26,5 @@ public class ApplicationConfiguration {
         return new JPAQueryFactory(entityManager);
     }
 
-
 }
 

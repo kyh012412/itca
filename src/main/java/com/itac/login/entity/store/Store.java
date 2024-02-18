@@ -1,6 +1,7 @@
 package com.itac.login.entity.store;
 
 import com.itac.login.entity.StringListConverter;
+import com.itac.login.entity.review.Review;
 import com.itac.login.entity.user.Users;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@ToString
 @TypeDef(name="json", typeClass= JsonType.class)
 public class Store implements Serializable {
 
@@ -50,11 +52,14 @@ public class Store implements Serializable {
 //    private int lowprice;
 //    @Column(name="highprice")
 //    private int highprice;
-
+//
 //    @Column(name="lat")
 //    private float lat;
 //    @Column(name="lng")
 //    private float lng;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.EAGER)
+    private List<Review> reviews = new ArrayList<>();
 
     @Column(name="images")
     @Convert(converter = StringListConverter.class)

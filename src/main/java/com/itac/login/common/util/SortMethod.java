@@ -4,6 +4,7 @@ import com.itac.login.entity.review.ReviewRepository;
 import com.itac.login.entity.store.Store;
 import com.itac.login.entity.store.StoreRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
@@ -11,6 +12,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 public class SortMethod {
 
@@ -34,9 +36,9 @@ public class SortMethod {
         // -> 순회할리스트, 점수를 기록할 map, 가중치  순으로 매개변수입력 (반환형 map)
         map = calculateMap(list,map,gradeWeight);
 
-//        // 리뷰 많은순 처리 필요
-//        list = sortByReviews(list);
-//        map = calculateMap(list,map,reviewWeight);
+        // 리뷰 많은순 처리 필요
+        list = sortByReviews(list);
+        map = calculateMap(list,map,reviewWeight);
 //
 //        // 가격 낮은순으로 처리 필요
 //        list = sortByPrice(list);
@@ -83,9 +85,10 @@ public class SortMethod {
     public List<Store> sortByReviews(List<Store> list,Object...flag){
         final int orderDirection = (flag.length==0?-1:1); //내림차순일 때 -1, 오름차순일때 1
 
-        list.sort((o1,o2)->{
-            int src1 = reviewRepository.findAllByStore_StoreNum(o1.getStoreNum()).size();
-            int src2 = reviewRepository.findAllByStore_StoreNum(o2.getStoreNum()).size();
+        log.info("list.toString():"+list.toString());
+        Collections.sort(list,(o1,o2)->{
+            int src1 = (o1.getReviews()!=null)?o1.getReviews().size():0;
+            int src2 = (o2.getReviews()!=null)?o2.getReviews().size():0;
             if(src1-src2!=0){
                 return (src1>src2?-1:1)*orderDirection;
             }else
